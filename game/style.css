@@ -1,0 +1,274 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #05050a;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    width: 95vw;
+    max-width: 800px;
+    aspect-ratio: 2 / 1; 
+    border: 2px solid #00f2fe;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+    background: #000;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#start-screen {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    text-align: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+#start-screen h1,
+#start-screen p,
+#start-screen .controls-hint {
+    display: none;
+}
+
+#start-btn {
+    padding: clamp(12px, 3vh, 16px) clamp(30px, 8vw, 45px);
+    font-size: clamp(18px, 5vw, 24px);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: clamp(2px, 1vw, 3px);
+    
+    color: #00f2fe;
+    background: transparent;
+    border: 2px solid #00f2fe;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.5),
+                inset 0 0 10px rgba(0, 242, 254, 0.3);
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    animation: buttonPulse 2s infinite;
+    
+    display: inline-block;
+    max-width: 90%;
+    white-space: nowrap;
+}
+
+@media (max-width: 544px) {
+    #start-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        letter-spacing: 1.5px;
+        border-width: 1.5px;
+        max-width: 200px;
+        white-space: normal;
+        line-height: 1.3;
+    }
+}
+
+#start-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 242, 254, 0.2), 
+        transparent
+    );
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+#start-btn:hover {
+    color: #ff0055;
+    border-color: #ff0055;
+    box-shadow: 0 0 30px rgba(255, 0, 85, 0.7),
+                inset 0 0 15px rgba(255, 0, 85, 0.4);
+    transform: scale(1.05);
+}
+
+#start-btn:active {
+    transform: scale(0.95);
+}
+
+.ui-overlay {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.score-box, .high-score {
+    color: #00f2fe;
+    font-size: clamp(14px, 3vw, 20px);
+    text-shadow: 0 0 10px #00f2fe;
+    background: rgba(0, 0, 0, 0.7);
+    padding: clamp(5px, 1.5vw, 8px) clamp(10px, 3vw, 15px);
+    border-radius: 20px;
+    border: 1px solid #00f2fe;
+    margin-bottom: 5px;
+    backdrop-filter: blur(3px);
+}
+
+@media (max-width: 717px) {
+    #game-container {
+        width: 98vw;
+        aspect-ratio: 1.5 / 1;
+    }
+}
+
+#game-over-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+    animation: fadeIn 0.3s ease;
+}
+
+.game-over-content {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(255, 0, 85, 0.1) 100%);
+    border: 2px solid #00f2fe;
+    border-radius: 20px;
+    padding: clamp(20px, 5vw, 40px) clamp(30px, 8vw, 60px);
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0, 242, 254, 0.3),
+                inset 0 0 30px rgba(0, 242, 254, 0.2);
+    animation: slideIn 0.4s ease;
+    max-width: 90%;
+    width: auto;
+    min-width: min(280px, 80%);
+}
+
+.game-over-title {
+    color: #ff0055;
+    font-size: clamp(28px, 8vw, 48px);
+    text-transform: uppercase;
+    letter-spacing: clamp(3px, 1.5vw, 8px);
+    margin-bottom: clamp(15px, 4vh, 30px);
+    text-shadow: 0 0 20px #ff0055, 0 0 40px #ff0055;
+    animation: glowPulse 2s infinite;
+}
+
+.game-over-score,
+.game-over-highscore {
+    margin: clamp(10px, 2vh, 15px) 0;
+    font-size: clamp(16px, 4vw, 24px);
+    display: flex;
+    justify-content: center;
+    gap: clamp(10px, 3vw, 20px);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.score-label,
+.highscore-label {
+    color: #ffffff;
+    opacity: 0.8;
+    font-size: clamp(14px, 3.5vw, 18px);
+}
+
+.score-value,
+.highscore-value {
+    color: #00f2fe;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: bold;
+    text-shadow: 0 0 15px #00f2fe;
+    background: rgba(0, 0, 0, 0.5);
+    padding: clamp(4px, 1.2vw, 6px) clamp(8px, 2.5vw, 15px);
+    border-radius: 8px;
+    border: 1px solid #00f2fe;
+    min-width: clamp(50px, 12vw, 80px);
+}
+
+.game-over-highscore .highscore-value {
+    color: #ff0055;
+    text-shadow: 0 0 15px #ff0055;
+    border-color: #ff0055;
+}
+
+.game-over-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-top: clamp(20px, 5vh, 30px);
+}
+
+.game-over-btn {
+    padding: clamp(10px, 2.5vh, 14px) clamp(20px, 5vw, 35px);
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: clamp(1px, 0.8vw, 2px);
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    min-width: clamp(140px, 35vw, 180px);
+    white-space: nowrap;
+    color: #ff0055;
+    border: 2px solid #ff0055;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+}
+
+.game-over-btn:hover {
+    color: #00f2fe;
+    border-color: #00f2fe;
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.7);
+    transform: scale(1.05);
+}
+
+.game-over-btn:active {
+    transform: scale(0.95);
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+}
+
+@keyframes slideIn { 
+    from { transform: translateY(-30px); opacity: 0; } 
+    to { transform: translateY(0); opacity: 1; } 
+}
+
+@keyframes buttonPulse { 
+    0%, 100% { box-shadow: 0 0 20px currentColor; } 
+    50% { box-shadow: 0 0 35px currentColor; } 
+}

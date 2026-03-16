@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Dash: Gravity Shift</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div class="ui-overlay">
+            <div class="score-box">Score: <span id="currentScore">0</span></div>
+            <div class="high-score">High: <span id="highScore">0</span></div>
+        </div>
+
+        <div id="start-screen">
+            <button id="start-btn">START GAME</button>
+        </div>
+
+        <div id="game-over-overlay">
+            <div class="game-over-content">
+                <h2 class="game-over-title">GAME OVER</h2>
+                <div class="game-over-score">
+                    <span class="score-label">Score:</span>
+                    <span class="score-value" id="game-over-score-val">0</span>
+                </div>
+                <div class="game-over-highscore">
+                    <span class="highscore-label">High:</span>
+                    <span class="highscore-value" id="game-over-high-val">0</span>
+                </div>
+                <div class="game-over-buttons">
+                    <button id="retry-btn" class="game-over-btn">RETRY</button>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
